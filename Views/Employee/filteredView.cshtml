@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Filtered Products";
+}
+<h2>Product Filter</h2>
+
+<form method="get">
+    <div class="form-group">
+        <label>Category:</label>
+        <input name="category" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>From Date:</label>
+        <input name="fromDate" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>To Date:</label>
+        <input name="toDate" type="date" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-info">Filter</button>
+</form>
+
+<table class="table mt-4 table-striped">
+    <thead>
+        <tr>
+            <th>Farmer</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Production Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Farmer.Name</td>
+                <td>@p.Name</td>
+                <td>@p.Category</td>
+                <td>@p.ProductionDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
