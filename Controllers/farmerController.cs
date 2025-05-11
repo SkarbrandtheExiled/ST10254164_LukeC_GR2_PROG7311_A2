@@ -8,7 +8,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
         {
             return View();
         }
-        public IActionResult productsView()
+        public IActionResult viewProducts()
         {
             return View();
         }

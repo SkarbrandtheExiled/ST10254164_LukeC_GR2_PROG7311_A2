@@ -8,14 +8,14 @@
 
     <div class="container">
         <!-- Background video -->
-        <video controls="controls">
+        <video autoplay loop muted class="background-clip">
             <source src="~/background/green-field.3840x2160.mp4" type="video/mp4" />
         </video>
+
         <!-- View Container -->
         <div class="view-container bg-white p-5 rounded shadow" style="margin-top: 100px;">
             <h1 class="text-center mb-4">View Claims</h1>
 
-            <!-- Check if there are any claims -->
             @if (!Model.Any())
             {
                 <div class="alert alert-info text-center" role="alert">
@@ -24,7 +24,7 @@
             }
             else
             {
-                <!-- Claims Table -->
+                <!-- products Table -->
                 <table class="table table-striped table-bordered">
                     <thead class="thead-dark">
                         <tr>

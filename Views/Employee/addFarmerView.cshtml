@@ -4,19 +4,24 @@
 
     <div class="container">
         <!-- Background video -->
-        <video controls="controls">
+        <video autoplay loop muted class="background-clip">
             <source src="~/background/green-field.3840x2160.mp4" type="video/mp4" />
         </video>
 
         <form action="addFarmerView" method="post">
-       
-
-            <div class="mb-3">
-                <label for="Name" class="form-label">Name</label>
-                <input id="Name" name="Name" class="form-control" required />
-                <div class="invalid-feedback">Name is required.</div>
+      
+            <div class="email">
+                <label for="Email" class="form-label">Email</label>
+                <input id="Email" name="Email" class="form-control" required />
+                <div class="invalid-feedback">Email is required.</div>
             </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <div class="password">
+                <label for="Password" class="form-label">Password</label>
+                <input id="Password" name="Password" class="form-control" type="password" required />
+                <div class="invalid-feedback">Password is required.</div>
+            </div>
+
+            <div class="submit-button">
                 <button type="submit" class="btn btn-success btn-custom">Add Farmer</button>
             </div>
         </form>
