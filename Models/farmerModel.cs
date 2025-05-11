@@ -2,9 +2,9 @@
 {
     public class farmerModel
     {
-        public farmerModel()
-        {
-            
-        }
-        }
+      public int farmerID { get; set; }
+        public String productName { get; set; }
+        public String Category { get; set; }
+        public DateTime productCreationDate { get; set; }
+    }
 }
