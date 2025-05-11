@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ST10254164_LukeC_GR2_PROG7311_A2.Models.productModel>
+    @{
+    ViewData["Title"] = "View products";
+}
+<h3> View Products</h3>
+
+<body>
+
+    <div class="container">
+        <!-- Background video -->
+        <video controls="controls">
+            <source src="~/background/green-field.3840x2160.mp4" type="video/mp4" />
+        </video>
+        <!-- View Container -->
+        <div class="view-container bg-white p-5 rounded shadow" style="margin-top: 100px;">
+            <h1 class="text-center mb-4">View Claims</h1>
+
+            <!-- Check if there are any claims -->
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center" role="alert">
+                    No products exist yet, please add a product to see it here.
+                </div>
+            }
+            else
+            {
+                <!-- Claims Table -->
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>product ID</th>
+                            <th>product Name</th>
+                            <th>product Date</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var claim in Model)
+                        {
+                            <tr>
+                                <td>@claim.productID</td>
+                                <td>@claim.name</td>
+                                <td>@claim.productDate.ToShortDateString()</td>
+                                <td>@claim.Category</td>
+                               
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</body>

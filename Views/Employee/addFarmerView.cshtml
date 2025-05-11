@@ -1,7 +1,16 @@
 ﻿
-    <div class="view-container">
+    <div class="header">
         <h2>Add New Farmer</h2>
+
+    <div class="container">
+        <!-- Background video -->
+        <video controls="controls">
+            <source src="~/background/green-field.3840x2160.mp4" type="video/mp4" />
+        </video>
+
         <form action="addFarmerView" method="post">
+       
+
             <div class="mb-3">
                 <label for="Name" class="form-label">Name</label>
                 <input id="Name" name="Name" class="form-control" required />
@@ -11,4 +20,5 @@
                 <button type="submit" class="btn btn-success btn-custom">Add Farmer</button>
             </div>
         </form>
+    </div>
     </div>

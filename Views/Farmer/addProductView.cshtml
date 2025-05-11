@@ -1,33 +1,37 @@
-﻿<div class="tab-pane fade" id="addproduct" role="tabpanel" aria-labelledby="addproduct-tab">
-    <div class="view-container">
-        <h2>Add Product</h2>
-        <form action="addProductView" method="post">
-            <div class="mb-3">
-                <label for="ProductName" class="form-label">Name</label>
-                <input id="ProductName" name="Name" class="form-control" required />
-                <div class="invalid-feedback">Product name is required.</div>
-            </div>
-            <div class="mb-3">
-                <label for="Category" class="form-label">Category</label>
-                <select id="Category" name="Category" class="form-select" required>
-                    <option value="">Select a category</option>
-                    <option value="Vegetables">Vegetables</option>
-                    <option value="Fruit">Fruit</option>
-                    <option value="Dairy">Dairy</option>
-                    <option value="Poultry">Poultry</option>
-                    <option value="Meat">Meat</option>
-                    <option value="Grains">Grains</option>
-                </select>
-                <div class="invalid-feedback">Please select a category.</div>
-            </div>
-            <div class="mb-3">
-                <label for="ProductionDate" class="form-label">Production Date</label>
-                <input id="ProductionDate" name="ProductionDate" type="date" class="form-control" required />
-                <div class="invalid-feedback">Production date is required.</div>
-            </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="submit" class="btn btn-primary btn-custom">Add Product</button>
-            </div>
-        </form>
+﻿@model ST10254164_LukeC_GR2_PROG7311_A2.Models.productModel
+
+<h2>Add product</h2>
+<body>
+    <div class="container">
+        <video controls="controls">
+            <source src="~/background/green-field.3840x2160.mp4" type="video/mp4" />
+        </video>
+
+        <div class="add-container">
+
+            <form asp-action="AddClaim" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="name">Product Name:</label>
+                    <input asp-for="name" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="productDate">Product creation date:</label>
+                    <input asp-for="productDate" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="category">Category:</label>
+                    <input asp-for="category" class="form-control" step="0.01" required />
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit Claim</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+</body>
+
