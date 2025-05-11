@@ -1,43 +1,71 @@
-﻿
-@{
-    ViewData["Title"] = "Filtered Products";
-}
-<h2>Product Filter</h2>
+﻿<div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="filter-tab">
+    <div class="view-container">
+        <h2>Filter Products</h2>
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Fruit">Fruit</option>
+                    <option value="Dairy">Dairy</option>
+                    <option value="Poultry">Poultry</option>
+                    <option value="Meat">Meat</option>
+                    <option value="Grains">Grains</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="fromDate" class="form-label">From Date</label>
+                <input id="fromDate" name="fromDate" type="date" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label for="toDate" class="form-label">To Date</label>
+                <input id="toDate" name="toDate" type="date" class="form-control" />
+            </div>
+            <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-info btn-custom">Filter</button>
+                <button type="reset" class="btn btn-outline-secondary btn-custom">Reset</button>
+            </div>
+        </form>
 
-<form method="get">
-    <div class="form-group">
-        <label>Category:</label>
-        <input name="category" class="form-control" />
+        <div class="table-responsive mt-4">
+            <table class="table table-striped table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Farmer</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Production Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample data for preview -->
+                    <tr>
+                        <td>John Smith</td>
+                        <td>Organic Tomatoes</td>
+                        <td>Vegetables</td>
+                        <td>05/02/2025</td>
+                    </tr>
+                    <tr>
+                        <td>Emily Johnson</td>
+                        <td>Strawberries</td>
+                        <td>Fruit</td>
+                        <td>05/05/2025</td>
+                    </tr>
+                    <tr>
+                        <td>Michael Brown</td>
+                        <td>Whole Wheat Flour</td>
+                        <td>Grains</td>
+                        <td>04/28/2025</td>
+                    </tr>
+                    <tr>
+                        <td>Sarah Wilson</td>
+                        <td>Free Range Eggs</td>
+                        <td>Poultry</td>
+                        <td>05/09/2025</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="form-group">
-        <label>From Date:</label>
-        <input name="fromDate" type="date" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>To Date:</label>
-        <input name="toDate" type="date" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-info">Filter</button>
-</form>
-
-<table class="table mt-4 table-striped">
-    <thead>
-        <tr>
-            <th>Farmer</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Production Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var p in Model)
-        {
-            <tr>
-                <td>@p.Farmer.Name</td>
-                <td>@p.Name</td>
-                <td>@p.Category</td>
-                <td>@p.ProductionDate.ToShortDateString()</td>
-            </tr>
-        }
-    </tbody>
-</table>
+</div>

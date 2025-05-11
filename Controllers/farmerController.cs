@@ -4,7 +4,11 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 {
     public class farmerController : Controller
     {
-        public IActionResult Index()
+        public IActionResult addProductView()
+        {
+            return View();
+        }
+        public IActionResult productsView()
         {
             return View();
         }

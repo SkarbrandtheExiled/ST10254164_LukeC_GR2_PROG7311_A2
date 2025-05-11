@@ -1,30 +1,33 @@
-﻿
-@{
-    ViewData["Title"] = "Add Product";
-}
-<h2>Add Product</h2>
-
-<form asp-action="AddProduct" method="post">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger">
-
-        </span>
+﻿<div class="tab-pane fade" id="addproduct" role="tabpanel" aria-labelledby="addproduct-tab">
+    <div class="view-container">
+        <h2>Add Product</h2>
+        <form action="addProductView" method="post">
+            <div class="mb-3">
+                <label for="ProductName" class="form-label">Name</label>
+                <input id="ProductName" name="Name" class="form-control" required />
+                <div class="invalid-feedback">Product name is required.</div>
+            </div>
+            <div class="mb-3">
+                <label for="Category" class="form-label">Category</label>
+                <select id="Category" name="Category" class="form-select" required>
+                    <option value="">Select a category</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Fruit">Fruit</option>
+                    <option value="Dairy">Dairy</option>
+                    <option value="Poultry">Poultry</option>
+                    <option value="Meat">Meat</option>
+                    <option value="Grains">Grains</option>
+                </select>
+                <div class="invalid-feedback">Please select a category.</div>
+            </div>
+            <div class="mb-3">
+                <label for="ProductionDate" class="form-label">Production Date</label>
+                <input id="ProductionDate" name="ProductionDate" type="date" class="form-control" required />
+                <div class="invalid-feedback">Production date is required.</div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary btn-custom">Add Product</button>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label asp-for="Category"></label>
-        <input asp-for="Category" class="form-control" />
-        <span asp-validation-for="Category" class="text-danger">
-
-        </span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ProductionDate"></label>
-        <input asp-for="ProductionDate" type="date" class="form-control" />
-        <span asp-validation-for="ProductionDate" class="text-danger">
-        </span>
-
-    </div>
-    <button type="submit" class="btn btn-primary">Add</button>
-</form>
+</div>

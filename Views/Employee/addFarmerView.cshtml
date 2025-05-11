@@ -1,14 +1,14 @@
 ﻿
-@{
-    ViewData["Title"] = "Add Farmer";
-}
-<h2>Add New Farmer</h2>
-
-<form asp-action="AddFarmer" method="post">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="view-container">
+        <h2>Add New Farmer</h2>
+        <form action="addFarmerView" method="post">
+            <div class="mb-3">
+                <label for="Name" class="form-label">Name</label>
+                <input id="Name" name="Name" class="form-control" required />
+                <div class="invalid-feedback">Name is required.</div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-success btn-custom">Add Farmer</button>
+            </div>
+        </form>
     </div>
-    <button type="submit" class="btn btn-success">Add Farmer</button>
-</form>

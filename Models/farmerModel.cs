@@ -2,5 +2,9 @@
 {
     public class farmerModel
     {
-    }
+        public farmerModel()
+        {
+            
+        }
+        }
 }
