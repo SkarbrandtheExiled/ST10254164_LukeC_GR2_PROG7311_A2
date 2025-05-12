@@ -6,17 +6,17 @@
         </video>
 
         <form action="Login" method="post">
-            <div class="mb-3">
-                <label for="Email" class="form-label">Email</label>
-                <input id="Email" name="Email" class="form-control" type="email" required />
-                <div class="invalid-feedback">Please enter a valid email address.</div>
+            <div class="log in">
+            <label for="username">Username:</label>
+            <input name="username" class="form-control" required />
+                <div class="invalid-feedback">Please enter a valid username</div>
             </div>
             <div class="password">
                 <label for="Password" class="form-label">Password</label>
                 <input id="Password" name="Password" class="form-control" type="password" required />
-                <div class="invalid-feedback">Password is required.</div>
+                <div class="invalid-feedback">Password is required</div>
             </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <div class="submit button">
                 <button type="submit" class="btn btn-primary btn-custom">Login</button>
             </div>
         </form>

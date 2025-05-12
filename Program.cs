@@ -9,9 +9,11 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<applicationDBContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DatabaseConnection")));
+builder.Services.AddSession();
 
 var app = builder.Build();
 
+app.UseSession();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
