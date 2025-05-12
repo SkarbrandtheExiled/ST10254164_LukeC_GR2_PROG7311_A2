@@ -33,9 +33,16 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 
             //redirect based on role
             if (user.role == "farmer")
-                return RedirectToAction("addProductView", "farmer");
+                return RedirectToAction("farmerDashboard", "farmer");
             else
-                return RedirectToAction("addFarmerView", "employee");
+                return RedirectToAction("employeeDashboard", "employee");
+        }
+        public IActionResult logout()
+        {
+            // Clear the session
+            HttpContext.Session.Clear();
+            // Redirect to the home view
+            return RedirectToAction("Index");
         }
     }
 }

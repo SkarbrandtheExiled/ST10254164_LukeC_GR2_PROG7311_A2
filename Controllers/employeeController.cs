@@ -11,10 +11,28 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
         {
             _context = context;
         }
+        public IActionResult employeeDashboard()
+        {
+            if (HttpContext.Session.GetString("Role") != "employee")
+            {
+                return RedirectToAction("LoginView", "Account");
+            }
 
+            return View();
+        }
         public IActionResult addFarmerView()
         {
+            if (HttpContext.Session.GetString("Role") != "employee")
+            {
+                return RedirectToAction("LoginView", "Account");
+            }
+
             return View();
+        }
+        [HttpPost]
+        public IActionResult AddFarmerView(string farmerName, string Email, string Password)
+        {
+            return RedirectToAction("employeeDashboard");
         }
     }
 }
