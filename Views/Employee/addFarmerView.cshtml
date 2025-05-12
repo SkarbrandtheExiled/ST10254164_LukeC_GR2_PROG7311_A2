@@ -10,7 +10,12 @@
 
         <form action="addFarmerView" method="post">
       
-            <div class="email">
+            <div class="name">
+                <label for="farmerName" class="form-label">farmer name</label>
+                <input id="farmerName" name="farmerName" class="form-control" required />
+                <div class="invalid-feedback">farmer name is required.</div>
+            </div>
+            <div class="Email">
                 <label for="Email" class="form-label">Email</label>
                 <input id="Email" name="Email" class="form-control" required />
                 <div class="invalid-feedback">Email is required.</div>

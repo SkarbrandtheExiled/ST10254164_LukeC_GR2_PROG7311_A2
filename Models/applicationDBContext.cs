@@ -9,8 +9,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
         {
 
         }
-        public DbSet<employeeModel> products { get; set; }
-        public DbSet<farmerModel> farmers { get; set; }
+        public DbSet<productModel> products { get; set; }
     }
     }
 
