@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -17,6 +20,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -41,6 +45,15 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="addFarmerView">Add farmer</a>
                         </li>
                     </ul>
+                     @if (HttpContextAccessor.HttpContext.Session.GetString("User") != null)
+                    {
+                        <div class="d-flex align-items-center">
+                            <span class="me-2 text-muted">Welcome, @HttpContextAccessor.HttpContext.Session.GetString("User")</span>
+                            <form asp-controller="account" asp-action="logout" method="post" class="d-inline">
+                                <button type="submit" class="btn-dark border-light">Logout</button>
+                            </form>
+                        </div>
+                        }
                 </div>
             </div>
         </nav>

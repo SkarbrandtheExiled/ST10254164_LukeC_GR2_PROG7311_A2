@@ -9,7 +9,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
         private readonly List<(string username, string password, string role)> users = new()
     {
         ("farmer", "password123", "farmer"),
-        ("employee", "employee", "employee")
+        ("employee", "password", "employee")
     };
         [HttpGet]
         public IActionResult loginView()
@@ -42,7 +42,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
             // Clear the session
             HttpContext.Session.Clear();
             // Redirect to the home view
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
