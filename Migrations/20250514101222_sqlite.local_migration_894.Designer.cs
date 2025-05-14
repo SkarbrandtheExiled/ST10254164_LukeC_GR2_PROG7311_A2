@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ST10254164_LukeC_GR2_PROG7311_A2.Models;
 
@@ -10,9 +11,11 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Models;
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Migrations
 {
     [DbContext(typeof(applicationDBContext))]
-    partial class applicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250514101222_sqlite.local_migration_894")]
+    partial class sqlitelocal_migration_894
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");

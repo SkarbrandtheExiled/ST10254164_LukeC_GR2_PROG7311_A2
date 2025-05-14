@@ -1,12 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using ST10254164_LukeC_GR2_PROG7311_A2.Models;
+using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.productRepository;
+using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.farmerRepository;
+using ST10254164_LukeC_GR2_PROG7311_A2.Services.productServices;
+using ST10254164_LukeC_GR2_PROG7311_A2.Services.farmerServices;
+using ST10254164_LukeC_GR2_PROG7311_A2.Services.employeeServices;
 using System;
+using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
+
+ builder.Services.AddScoped<IFarmerRepository, FarmerRepository>();
+  builder.Services.AddScoped<IFarmerServices, FarmerServices>();
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+ builder.Services.AddScoped<IProductServices, ProductServices>();
+
+builder.Services.AddScoped<IEmployeeServices, EmployeeServices>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
 builder.Services.AddDbContext<applicationDBContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DatabaseConnection")));

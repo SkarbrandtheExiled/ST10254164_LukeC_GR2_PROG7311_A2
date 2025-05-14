@@ -1,24 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
+using ST10254164_LukeC_GR2_PROG7311_A2.Services;
 using ST10254164_LukeC_GR2_PROG7311_A2.Models;
+using ST10254164_LukeC_GR2_PROG7311_A2.Services.productServices;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 {
     public class farmerController : Controller
     {
-        private readonly applicationDBContext _context;
-        public farmerController(applicationDBContext context)
+        private readonly IProductServices _productService;
+
+        public farmerController(IProductServices productService)
         {
-            _context = context;
+            _productService = productService;
         }
+
         public IActionResult farmerDashboard()
         {
-            // Check if user is logged in and is a farmer
             if (HttpContext.Session.GetString("Role") != "farmer")
-            {
-                return RedirectToAction("LoginView", "Account");
-            }
+                return RedirectToAction("loginView", "account");
 
             return View();
         }
@@ -26,43 +25,37 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
         [HttpGet]
         public IActionResult addProductView()
         {
+            if (HttpContext.Session.GetString("Role") != "farmer")
+                return RedirectToAction("loginView", "account");
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> addProductView(productModel model)
         {
+            if(model == null)
+            {
+                return View(new productModel());
+            }
+            
             if (ModelState.IsValid)
             {
-                model.dateAdded = DateTime.Now; 
-                _context.products.Add(model);
-                await _context.SaveChangesAsync();
+                model.farmerName = HttpContext.Session.GetString("User");
+                model.dateAdded = DateTime.Now;
+                await _productService.AddProductAsync(model);
                 return RedirectToAction("viewProducts");
             }
             return View(model);
         }
 
-        public IActionResult viewProducts(string farmerFilter = "", string categoryFilter = "", DateTime? dateFrom = null, DateTime? dateTo = null)
+        public async Task<IActionResult> viewProducts()
         {
-            // Check if user is logged in and is a farmer
             if (HttpContext.Session.GetString("Role") != "farmer")
-            {
-                return RedirectToAction("LoginView", "Account");
-            }
-            // Get current farmer's username
-            string currentFarmer = HttpContext.Session.GetString("User");
+                return RedirectToAction("loginView", "account");
 
-            // Filter products to only show current farmer's products
-            var products = _context.products
-                .Where(p => p.farmerName == currentFarmer)
-                .ToList();
-
-            // Get categories for this farmer only (for filtering)
-            ViewBag.Categories = _context.products
-                .Where(p => p.farmerName == currentFarmer)
-                .Select(p => p.Category)
-                .Distinct()
-                .ToList();
+            var currentFarmer = HttpContext.Session.GetString("User");
+            var products = await _productService.GetProductsByFarmerAsync(currentFarmer);
+            ViewBag.Categories = await _productService.GetCategoriesAsync(currentFarmer);
 
             return View(products);
         }

@@ -2,23 +2,16 @@
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
 {
-    public class productModel
+    public class farmerProductModel
     {
         [Key]
-        public int productID { get; set; }
-
+        public int farmerProductID { get; set; }
         [Required]
         public string productName { get; set; }
-
         [Required]
         public string Category { get; set; }
-
         [DataType(DataType.Date)]
+        [Required]
         public DateTime productCreationDate { get; set; }
-
-        public string farmerName { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime dateAdded { get; set; }
     }
 }

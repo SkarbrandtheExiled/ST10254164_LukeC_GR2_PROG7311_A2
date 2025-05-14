@@ -49,6 +49,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-controller="Employee" asp-action="addFarmerView">Add Farmer</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Employee" asp-action="viewAllProducts">View Products</a>
+                        </li>
                 }
                     </ul>
                      @if (HttpContextAccessor.HttpContext.Session.GetString("User") != null)
