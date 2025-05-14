@@ -1,1 +1,4 @@
-# ST10254164_LukeC_GR2_PROG7311_A2
+# ST10254164 Agri-Energy Connect platform
+
+Running of the application:
+
