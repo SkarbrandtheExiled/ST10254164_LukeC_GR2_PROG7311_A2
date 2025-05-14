@@ -11,8 +11,8 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Models;
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Migrations
 {
     [DbContext(typeof(applicationDBContext))]
-    [Migration("20250514191142_sqlite.local_migration_705")]
-    partial class sqlitelocal_migration_705
+    [Migration("20250514211613_sqlite.local_migration_161")]
+    partial class sqlitelocal_migration_161
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,67 +22,71 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Migrations
 
             modelBuilder.Entity("ST10254164_LukeC_GR2_PROG7311_A2.Models.employeeModel", b =>
                 {
-                    b.Property<int>("EmployeeID")
+                    b.Property<int>("EmployeeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("EmployeeName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("dateAdded")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("employeeName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("EmployeeID");
+                    b.HasKey("EmployeeId");
 
                     b.ToTable("employees");
                 });
 
             modelBuilder.Entity("ST10254164_LukeC_GR2_PROG7311_A2.Models.farmerModel", b =>
                 {
-                    b.Property<int>("farmerID")
+                    b.Property<int>("FarmerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FarmerName")
+                        .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("farmerName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("farmerID");
+                    b.HasKey("FarmerId");
 
                     b.ToTable("farmers");
                 });
 
             modelBuilder.Entity("ST10254164_LukeC_GR2_PROG7311_A2.Models.productModel", b =>
                 {
-                    b.Property<int>("productID")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Category")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("FarmerId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("dateAdded")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("farmerID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("farmerName")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("productCreationDate")
@@ -90,11 +94,12 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Migrations
 
                     b.Property<string>("productName")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("productID");
+                    b.HasKey("ProductId");
 
-                    b.HasIndex("farmerID");
+                    b.HasIndex("FarmerId");
 
                     b.ToTable("products");
                 });
@@ -102,12 +107,17 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Migrations
             modelBuilder.Entity("ST10254164_LukeC_GR2_PROG7311_A2.Models.productModel", b =>
                 {
                     b.HasOne("ST10254164_LukeC_GR2_PROG7311_A2.Models.farmerModel", "Farmer")
-                        .WithMany()
-                        .HasForeignKey("farmerID")
+                        .WithMany("products")
+                        .HasForeignKey("FarmerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Farmer");
+                });
+
+            modelBuilder.Entity("ST10254164_LukeC_GR2_PROG7311_A2.Models.farmerModel", b =>
+                {
+                    b.Navigation("products");
                 });
 #pragma warning restore 612, 618
         }

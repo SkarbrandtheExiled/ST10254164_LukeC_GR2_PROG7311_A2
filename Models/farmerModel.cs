@@ -5,17 +5,17 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
     public class farmerModel
     {
         [Key]
-        public int farmerID { get; set; }
-        public farmerModel Farmer { get; set; }
+        public int FarmerId { get; set; }
 
-        [Required]
-        public string farmerName { get; set; }
+        [Required(ErrorMessage = "Farmer name is required")]
+        [MaxLength(50)] // Add maximum length for safety
+        public string FarmerName { get; set; }
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
+        [Required(ErrorMessage = "Password is required")]
+        [MaxLength(100)] // Consider using a more reasonable length
         public string Password { get; set; }
+
+        //  one-to-many relationship with the ProductModel
+        public ICollection<productModel> products { get; set; }
     }
 }

@@ -30,27 +30,27 @@
                 {
 
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Farmer" asp-action="farmerDashboard">Farmer Dashboard</a>
+                        <a class="nav-link text-dark" asp-controller="farmer" asp-action="farmerDashboard">Farmer Dashboard</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Farmer" asp-action="addProductView">Add Product</a>
+                        <a class="nav-link text-dark" asp-controller="farmer" asp-action="addProductView">Add Product</a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Farmer" asp-action="viewProducts">View Products</a>
+                        <a class="nav-link text-dark" asp-controller="farmer" asp-action="viewProducts">View Products</a>
                     </li>
 
                 }
                 else if (HttpContextAccessor.HttpContext.Session.GetString("Role") == "employee")
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Employee" asp-action="employeeDashboard">Employee Dashboard</a>
+                        <a class="nav-link text-dark" asp-controller="employee" asp-action="employeeDashboard">Employee Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Employee" asp-action="addFarmerView">Add Farmer</a>
+                        <a class="nav-link text-dark" asp-controller="employee" asp-action="addFarmerView">Add Farmer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Employee" asp-action="viewAllProducts">View Products</a>
+                        <a class="nav-link text-dark" asp-controller="employee" asp-action="viewAllProducts">View Products</a>
                         </li>
                 }
                     </ul>

@@ -12,6 +12,18 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
         public DbSet<farmerModel> farmers { get; set; }
         public DbSet<employeeModel> employees { get; set; }
         public DbSet<productModel> products { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configure the relationship between Product and Farmer
+            modelBuilder.Entity<productModel>()
+                .HasOne(p => p.Farmer)
+                .WithMany(f => f.products)
+                .HasForeignKey(p => p.FarmerId)
+                .OnDelete(DeleteBehavior.Cascade); // Consider the delete behavior
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
-    }
+}
 

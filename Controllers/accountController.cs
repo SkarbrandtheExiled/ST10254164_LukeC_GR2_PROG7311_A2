@@ -10,75 +10,47 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
     {
         private readonly applicationDBContext _context;
 
-        public accountController(applicationDBContext context) // Inject DbContext
+        public accountController(applicationDBContext context)
         {
             _context = context;
         }
 
-        private bool VerifyPassword(string enteredPassword, string storedPassword)
-        {
-            return enteredPassword == storedPassword;
-        }
-
-        [HttpGet]
-        public IActionResult loginView()
+        public IActionResult LoginView()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> loginViewAsync(string username, string password) 
+        public IActionResult LoginView(string username, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            // Attempt to authenticate as a farmer first
+            var farmer = _context.farmers.FirstOrDefault(f => f.FarmerName == username && f.Password == password);
+            if (farmer != null)
             {
-                ViewBag.LoginError = "Username and password are required.";
-                return View();
+                HttpContext.Session.SetString("UserRole", "Farmer");
+                HttpContext.Session.SetInt32("UserId", farmer.FarmerId); // Store FarmerId as int
+                return RedirectToAction("farmerDashboard", "farmer");
             }
 
-            var role = "";
-            string actualUserName = null; 
-
-
-            var employee = await _context.employees.FirstOrDefaultAsync(e => e.employeeName == username);
-
-            if (employee != null && VerifyPassword(password, employee.Password))
+            // If not a farmer, attempt to authenticate as an employee
+            var employee = _context.employees.FirstOrDefault(e => e.EmployeeName == username && e.Password == password); //this must be set to the username and password of the employee
+            if (employee != null)
             {
-                role = "employee";
-                actualUserName = employee.employeeName;
-                HttpContext.Session.SetString("User", actualUserName);
-                HttpContext.Session.SetString("Role", role);
-                HttpContext.Session.SetString("EmployeeName", actualUserName); // Specific employee name
+                HttpContext.Session.SetString("UserRole", "Employee");
+                HttpContext.Session.SetInt32("UserId", employee.EmployeeId); // Store EmployeeId as int
                 return RedirectToAction("employeeDashboard", "employee");
             }
-            else
-            {
-                // If not an employee, try to find a farmer by username (assuming farmerName is the login username)
-                var farmer = await _context.farmers.FirstOrDefaultAsync(f => f.farmerName == username); // Or f.Email == username
 
-                if (farmer != null && VerifyPassword(password, farmer.Password))
-                {
-                    role = "farmer";
-                    actualUserName = farmer.farmerName;
-                    HttpContext.Session.SetString("User", actualUserName);
-                    HttpContext.Session.SetString("Role", role);
-                    HttpContext.Session.SetString("FarmerName", actualUserName);
-                    HttpContext.Session.SetString("FarmerID", farmer.farmerID.ToString());
-                    return RedirectToAction("farmerDashboard", "farmer");
-                }
-                else
-                {
-                    // If no match is found
-                    ViewBag.LoginError = "Invalid username or password.";
-                    return View();
-                }
-            }
+            // If neither farmer nor employee, show error
+            ViewBag.LoginError = "Invalid username or password.";
+            return View();
         }
 
-        public IActionResult logout()
+        public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
-            return RedirectToAction("loginView", "account");
+            HttpContext.Session.Clear(); // Clear all session data
+            return RedirectToAction("loginView", "Account"); // Redirect to the login page
         }
     }
 }

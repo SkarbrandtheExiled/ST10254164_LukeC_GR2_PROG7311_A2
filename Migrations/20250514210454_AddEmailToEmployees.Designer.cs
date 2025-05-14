@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ST10254164_LukeC_GR2_PROG7311_A2.Models;
 
@@ -10,9 +11,11 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Models;
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Migrations
 {
     [DbContext(typeof(applicationDBContext))]
-    partial class applicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250514210454_AddEmailToEmployees")]
+    partial class AddEmailToEmployees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -22,6 +25,11 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Migrations
                     b.Property<int>("EmployeeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("EmployeeName")
                         .IsRequired()

@@ -8,115 +8,95 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
     {
         private readonly applicationDBContext _context;
 
-        public employeeController(applicationDBContext context) // Inject DbContext
+        public employeeController(applicationDBContext context)
         {
             _context = context;
         }
 
-        private string HashPassword(string password)
-        {
-            return password; // Placeholder!
-        }
         public IActionResult employeeDashboard()
         {
-            if (HttpContext.Session.GetString("Role") != "employee")
-                return RedirectToAction("loginView", "account");
+            // Check for employee role
+            if (HttpContext.Session.GetString("UserRole") != "Employee")
+            {
+                return RedirectToAction("LoginView", "Account"); // Redirect if not an employee
+            }
             return View();
         }
 
-        [HttpGet]
-        public IActionResult addFarmerView()
+        public IActionResult AddFarmerView()
         {
-            if (HttpContext.Session.GetString("Role") != "employee")
-                return RedirectToAction("loginView", "account");
+            // Check for employee role
+            if (HttpContext.Session.GetString("UserRole") != "Employee")
+            {
+                return RedirectToAction("LoginView", "Account");
+            }
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> addFarmerView(string farmerName, string email, string password)
+        public IActionResult AddFarmerView(farmerModel model)
         {
-            if (HttpContext.Session.GetString("Role") != "employee")
-                return RedirectToAction("loginView", "account");
-
-            if (string.IsNullOrWhiteSpace(farmerName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            // Check for employee role
+            if (HttpContext.Session.GetString("UserRole") != "Employee")
             {
-                ViewBag.Message = "Farmer name, email, and password are required.";
-                return View();
+                return RedirectToAction("LoginView", "Account");
             }
 
-            bool farmerExists = await _context.farmers.AnyAsync(f => f.farmerName == farmerName || f.Email == email);
-            if (farmerExists)
+            if (ModelState.IsValid)
             {
-                ViewBag.Message = "A farmer with that name or email already exists.";
-                return View();
-            }
-
-            var newFarmer = new farmerModel
-            {
-                farmerName = farmerName,
-                Email = email,
-Password = password
-            };
-
-            try
-            {
-                _context.farmers.Add(newFarmer);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Farmer added successfully!";
+                // Ensure the email is unique
+                if (_context.farmers.Any(f => f.Email == model.Email))
+                {
+                    ModelState.AddModelError("Email", "Email address is already taken.");
+                    return View(model);
+                }
+                model.Password = model.Password;
+                _context.farmers.Add(model);
+                _context.SaveChanges();
                 return RedirectToAction("employeeDashboard");
             }
-            catch (DbUpdateException ex)
-            {
-                // Log ex
-                ViewBag.Message = "An error occurred while saving the farmer. The name or email might already exist.";
-                return View();
-            }
-            catch (Exception ex)
-            {
-                // Log ex
-                ViewBag.Message = "An unexpected error occurred while adding the farmer.";
-                return View();
-            }
+            return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> viewAllProducts(string farmerFilter = "", string categoryFilter = "", DateTime? dateFrom = null, DateTime? dateTo = null)
+        public IActionResult ViewAllProducts(string farmerFilter, string categoryFilter, DateTime? dateFrom, DateTime? dateTo)
         {
-            if (HttpContext.Session.GetString("Role") != "employee")
-                return RedirectToAction("loginView", "account");
+            // Check for employee role
+            if (HttpContext.Session.GetString("UserRole") != "Employee")
+            {
+                return RedirectToAction("LoginView", "Account");
+            }
 
-            IQueryable<productModel> query = _context.products.AsQueryable();
+            var products = _context.products.AsQueryable();
 
             if (!string.IsNullOrEmpty(farmerFilter))
             {
-                query = query.Where(p => p.farmerName == farmerFilter); // Assumes productModel.farmerName is populated
+                products = products.Where(p => p.farmerName == farmerFilter);
             }
+
             if (!string.IsNullOrEmpty(categoryFilter))
             {
-                query = query.Where(p => p.Category == categoryFilter);
+                products = products.Where(p => p.Category == categoryFilter);
             }
+
             if (dateFrom.HasValue)
             {
-                query = query.Where(p => p.productCreationDate >= dateFrom.Value);
+                products = products.Where(p => p.dateAdded >= dateFrom.Value);
             }
+
             if (dateTo.HasValue)
             {
-                // Add 1 day and use LessThan to include the whole 'dateTo' day
-                query = query.Where(p => p.productCreationDate < dateTo.Value.AddDays(1));
+                products = products.Where(p => p.dateAdded <= dateTo.Value);
             }
 
-            var products = await query.ToListAsync();
-
-            ViewBag.Farmers = await _context.farmers.Select(f => f.farmerName).Distinct().ToListAsync();
-            ViewBag.Categories = await _context.products.Select(p => p.Category).Distinct().ToListAsync();
-
+            // Use .Select to get distinct farmer names and categories
+            ViewBag.Farmers = _context.products.Select(p => p.farmerName).Distinct().OrderBy(n => n).ToList();
+            ViewBag.Categories = _context.products.Select(p => p.Category).Distinct().OrderBy(c => c).ToList();
             ViewBag.CurrentFarmerFilter = farmerFilter;
             ViewBag.CurrentCategoryFilter = categoryFilter;
             ViewBag.CurrentDateFrom = dateFrom;
             ViewBag.CurrentDateTo = dateTo;
 
-            return View(products);
+            return View(products.ToList());
         }
     }
 }
