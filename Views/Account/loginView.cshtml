@@ -1,21 +1,25 @@
 ﻿
     <div class="view-container">
         <h2>Login</h2>
+    @if (ViewBag.LoginError != null)
+    {
+        <div class="alert alert-danger">@ViewBag.LoginError</div>
+    }
 
-
-        <form action="loginView" method="post">
-            <div class="log in">
+    <form method="post" asp-controller="account" asp-action="loginView">
+        @Html.AntiForgeryToken()
+        <div class="log in">
             <label for="username">Username:</label>
             <input name="username" class="form-control" required />
-                <div class="invalid-feedback">Please enter a valid username</div>
-            </div>
-            <div class="password">
-                <label for="Password" class="form-label">Password</label>
-                <input id="Password" name="Password" class="form-control" type="password" required />
-                <div class="invalid-feedback">Password is required</div>
-            </div>
-            <div class="submit button">
-                <button type="submit" class="btn btn-primary btn-custom">login</button> <!--once button is clicked, depending on the data they are either a farmer or employee-->
-            </div>
-        </form>
-    </div>
+            <div class="invalid-feedback">Please enter a valid username</div>
+        </div>
+        <div class="password">
+            <label for="Password" class="form-label">Password</label>
+            <input id="Password" name="Password" class="form-control" type="password" required />
+            <div class="invalid-feedback">Password is required</div>
+        </div>
+        <div class="submit button">
+            <button type="submit" class="btn btn-primary btn-custom">login</button>
+        </div>
+    </form>
+</div>

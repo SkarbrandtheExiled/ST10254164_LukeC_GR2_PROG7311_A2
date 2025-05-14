@@ -5,7 +5,7 @@
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Migrations
 {
     /// <inheritdoc />
-    public partial class sqlitelocal_migration_762 : Migration
+    public partial class sqlitelocal_migration_705 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

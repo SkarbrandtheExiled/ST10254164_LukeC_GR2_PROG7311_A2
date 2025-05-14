@@ -6,6 +6,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
     {
         [Key]
         public int farmerID { get; set; }
+        public farmerModel Farmer { get; set; }
 
         [Required]
         public string farmerName { get; set; }

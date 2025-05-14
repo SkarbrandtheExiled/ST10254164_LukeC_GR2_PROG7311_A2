@@ -16,6 +16,8 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
         [DataType(DataType.Date)]
         public DateTime productCreationDate { get; set; }
 
+ public int farmerID { get; set; }
+        public farmerModel Farmer { get; set; }
         public string farmerName { get; set; }
 
         [DataType(DataType.Date)]

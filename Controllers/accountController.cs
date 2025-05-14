@@ -1,26 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ST10254164_LukeC_GR2_PROG7311_A2.Models;
-using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository;
-using ST10254164_LukeC_GR2_PROG7311_A2.Services.farmerServices;
+using System.Text;
 
 //------------------------------------START OF FILE------------------------------------//
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 {
     public class accountController : Controller
     {
-        private readonly IFarmerServices _farmerService;
-        
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly applicationDBContext _context;
 
-        public accountController(
-            IFarmerServices farmerService,
-            
-            IEmployeeRepository employeeRepository)
+        public accountController(applicationDBContext context) // Inject DbContext
         {
-            _farmerService = farmerService;
-            
-            _employeeRepository = employeeRepository;
+            _context = context;
+        }
+
+        private bool VerifyPassword(string enteredPassword, string storedPassword)
+        {
+            return enteredPassword == storedPassword;
         }
 
         [HttpGet]
@@ -30,48 +27,58 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> loginViewAsync(string username, string password)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> loginViewAsync(string username, string password) 
         {
-            var role = ""; // determine role
-
-            var employee = await _employeeRepository.GetEmployeeByCredentialsAsync(username, password);
-            if (employee != null)
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                role = "employee";
-            }
-            else
-            {
-                // Check if it's a farmer
-                var farmer = await _farmerService.GetFarmerByCredentials(username, password);
-                if (farmer != null)
-                {
-                    role = "farmer";
-                }
-            }
-
-            if (string.IsNullOrEmpty(role))
-            {
-                ViewBag.LoginError = "Invalid username or password.";
+                ViewBag.LoginError = "Username and password are required.";
                 return View();
             }
 
-            //store user info in session 
-            HttpContext.Session.SetString("User", username);
-            HttpContext.Session.SetString("Role", role);
+            var role = "";
+            string actualUserName = null; 
 
-            //redirect based on role
-            if (role == "farmer")
-                return RedirectToAction("farmerDashboard", "farmer");
-            else
+
+            var employee = await _context.employees.FirstOrDefaultAsync(e => e.employeeName == username);
+
+            if (employee != null && VerifyPassword(password, employee.Password))
+            {
+                role = "employee";
+                actualUserName = employee.employeeName;
+                HttpContext.Session.SetString("User", actualUserName);
+                HttpContext.Session.SetString("Role", role);
+                HttpContext.Session.SetString("EmployeeName", actualUserName); // Specific employee name
                 return RedirectToAction("employeeDashboard", "employee");
+            }
+            else
+            {
+                // If not an employee, try to find a farmer by username (assuming farmerName is the login username)
+                var farmer = await _context.farmers.FirstOrDefaultAsync(f => f.farmerName == username); // Or f.Email == username
+
+                if (farmer != null && VerifyPassword(password, farmer.Password))
+                {
+                    role = "farmer";
+                    actualUserName = farmer.farmerName;
+                    HttpContext.Session.SetString("User", actualUserName);
+                    HttpContext.Session.SetString("Role", role);
+                    HttpContext.Session.SetString("FarmerName", actualUserName);
+                    HttpContext.Session.SetString("FarmerID", farmer.farmerID.ToString());
+                    return RedirectToAction("farmerDashboard", "farmer");
+                }
+                else
+                {
+                    // If no match is found
+                    ViewBag.LoginError = "Invalid username or password.";
+                    return View();
+                }
+            }
         }
 
         public IActionResult logout()
         {
-            // Clear the session
             HttpContext.Session.Clear();
-            // Redirect to the home view
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("loginView", "account");
         }
     }
 }
