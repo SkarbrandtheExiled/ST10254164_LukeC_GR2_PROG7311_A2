@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="~/ST10254164_LukeC_GR2_PROG7311_A2.styles.css" asp-append-version="true" />
 </head>
 <body>
+    <!-- Background video -->
+    <video autoplay loop muted class="background-clip">
+        <source src="~/background/green-field.3840x2160.mp4" type="video/mp4" />
+    </video>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -21,29 +25,31 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <ul class="navbar-nav">
+                @if (HttpContextAccessor.HttpContext.Session.GetString("Role") == "farmer")
+                {
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Farmer" asp-action="farmerDashboard">Farmer Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="loginView">Login</a>
-                        </li>
-                       <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeDashboard">employee dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Farmer" asp-action="farmerDashboard">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Farmer" asp-action="addProductView">Add product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Farmer" asp-action="viewProducts">View products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="addFarmerView">Add farmer</a>
-                        </li>
+                        <a class="nav-link text-dark" asp-controller="Farmer" asp-action="addProductView">Add Product</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Farmer" asp-action="viewProducts">View Products</a>
+                    </li>
+
+                }
+                else if (HttpContextAccessor.HttpContext.Session.GetString("Role") == "employee")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Employee" asp-action="employeeDashboard">Employee Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Employee" asp-action="addFarmerView">Add Farmer</a>
+                    </li>
+                }
                     </ul>
                      @if (HttpContextAccessor.HttpContext.Session.GetString("User") != null)
                     {
@@ -55,7 +61,7 @@
                         </div>
                         }
                 </div>
-            </div>
+            
         </nav>
     </header>
     <div class="container">
