@@ -25,5 +25,8 @@ The user will be asked to log in in order to access any data
 The user will need to either log in as an employee or as a farmer
 employees are able to add farmers to the system as well as they are able to view all the products that have been added to the system
 the employee is also able to filter through the list of products, the filter includes features like name, category and dates
-once the employee is finished using the ystem they can log out through a button located in the top right of the page
+To log in as a employee use the username: admin and the password: admin123
+for the farmer due to lack of understanding, the username is TestData@gmail.com and the password testrun
+although there is a name for this dummy user the code does not want to read the farmer name
+
 
