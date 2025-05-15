@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using ST10254164_LukeC_GR2_PROG7311_A2.Models;
 using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.productRepository;
 using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.farmerRepository;
 using ST10254164_LukeC_GR2_PROG7311_A2.Services.productServices;
@@ -7,6 +6,7 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Services.farmerServices;
 using ST10254164_LukeC_GR2_PROG7311_A2.Services.employeeServices;
 using System;
 using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository;
+using ST10254164_LukeC_GR2_PROG7311_A2.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

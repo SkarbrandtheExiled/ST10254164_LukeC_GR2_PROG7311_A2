@@ -3,7 +3,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ST10254164_LukeC_GR2_PROG7311_A2.Models;
+using ST10254164_LukeC_GR2_PROG7311_A2.Data;
+
 
 #nullable disable
 
