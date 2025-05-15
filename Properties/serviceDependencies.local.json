@@ -8,6 +8,10 @@
       "resourceId": null,
       "type": "sqlite.local",
       "connectionId": "ConnectionStrings:DatabaseConnection"
+    },
+    "mssql1": {
+      "ignored": "true",
+      "type": "mssql"
     }
   }
 }

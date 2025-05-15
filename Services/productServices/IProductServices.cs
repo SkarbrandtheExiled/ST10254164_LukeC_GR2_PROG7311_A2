@@ -4,10 +4,15 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.productServices
 {
     public interface IProductServices
     {
-        Task<List<productModel>> GetFilteredProductsAsync(string farmer, string category, DateTime? from, DateTime? to);
-        Task<List<string>> GetFarmerNamesAsync();
-        Task<List<string>> GetCategoriesAsync(string farmerName = null);
-        Task AddProductAsync(productModel product);
-        Task<List<productModel>> GetProductsByFarmerAsync(string farmerName);
+        Task<IEnumerable<productModel>> GetProductsForFarmerAsync(int farmerId);
+        Task AddProductForFarmerAsync(productModel product, int farmerId);
+        Task<productModel?> GetProductByIdAsync(int productId);
+        Task<IEnumerable<productModel>> GetAllProductsForEmployeeAsync(
+            string? productType, DateTime? startDate, DateTime? endDate);
+        Task UpdateProductAsync(productModel product);
+        Task<IEnumerable<productModel>> GetAllProductsAsync();
+
+        Task DeleteProductAsync(int productId);
+
     }
 }

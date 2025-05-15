@@ -7,10 +7,28 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly applicationDBContext _context;
-        public EmployeeRepository(applicationDBContext context) => _context = context;
-        public async Task<employeeModel?> GetByNameAsync(string name)
-            => await _context.employees.FirstOrDefaultAsync(e => e.employeeName == name);
-        public async Task<employeeModel?> GetEmployeeByCredentialsAsync(string username, string password)
-            => await _context.employees.FirstOrDefaultAsync(e => e.employeeName == username && e.Password == password);
+
+        public EmployeeRepository(applicationDBContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<employeeModel?> GetUserByUsernameAsync(string username)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == username);
+        }
+
+        public async Task<employeeModel?> GetUserByIdAsync(int userId)
+        {
+            return await _context.Users.FindAsync(userId);
+        }
+
+        public async Task AddUserAsync(employeeModel user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

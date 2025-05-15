@@ -1,70 +1,115 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ST10254164_LukeC_GR2_PROG7311_A2.Services;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ST10254164_LukeC_GR2_PROG7311_A2.Models;
-using ST10254164_LukeC_GR2_PROG7311_A2.Services.productServices;
+using ST10254164_LukeC_GR2_PROG7311_A2.Services;
 using ST10254164_LukeC_GR2_PROG7311_A2.Services.farmerServices;
+using ST10254164_LukeC_GR2_PROG7311_A2.Services.productServices;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 {
+    [Authorize(Roles = "Employee")] // Only Employees can access this
     public class employeeController : Controller
     {
         private readonly IFarmerServices _farmerService;
         private readonly IProductServices _productService;
+        private readonly ILogger<employeeController> _logger;
 
-        public employeeController(IFarmerServices FarmerService, IProductServices ProductService)
+        public employeeController(
+            IFarmerServices farmerService,
+            IProductServices productService,
+            ILogger<employeeController> logger)
         {
-            _farmerService = FarmerService;
-            _productService = ProductService;
+            _farmerService = farmerService;
+            _productService = productService;
+            _logger = logger;
         }
 
-        public IActionResult employeeDashboard()
+
+        public async Task<IActionResult> employeeDashboard(employeeDashboardModel filterModel)
         {
-            if (HttpContext.Session.GetString("Role") != "employee")
-                return RedirectToAction("loginView", "account");
+            // Gets data needed for filtering options
+            var farmers = await _farmerService.GetAllFarmersAsync();
+            var farmerListItems = farmers
+                .Select(f => new SelectListItem { Value = f.Id.ToString(), Text = f.Name })
+                .ToList();
 
-            return View();
-        }
+            farmerListItems.Insert(0, new SelectListItem { Value = "", Text = "--- All Farmers ---" });
 
-        public IActionResult addFarmerView()
-        {
-            if (HttpContext.Session.GetString("Role") != "employee")
-                return RedirectToAction("loginView", "account");
+            // Get products based on filters
 
-            return View();
-        }
+            var productsQuery = await _productService.GetAllProductsAsync();
 
-        [HttpPost]
-        public async Task<IActionResult> addFarmerView(string farmerName, string email, string password)
-        {
-            if (HttpContext.Session.GetString("Role") != "employee")
-                return RedirectToAction("loginView", "account");
-
-            if (await _farmerService.FarmerExistsAsync(farmerName))
+            // Apply filters based on the submitted filterModel
+            if (filterModel.SelectedFarmerId.HasValue)
             {
-                ViewBag.Message = "Farmer with that name already exists.";
-                return View();
+                productsQuery = productsQuery.Where(p => p.FarmerId == filterModel.SelectedFarmerId.Value);
+            }
+            if (!string.IsNullOrWhiteSpace(filterModel.FilterProductType))
+            {
+                productsQuery = productsQuery.Where(p => p.Category.Equals(filterModel.FilterProductType, StringComparison.OrdinalIgnoreCase));
+            }
+            if (filterModel.FilterStartDate.HasValue)
+            {
+                //  comparison ignores time part if only date is relevant
+                productsQuery = productsQuery.Where(p => p.ProductionDate.Date >= filterModel.FilterStartDate.Value.Date);
+            }
+            if (filterModel.FilterEndDate.HasValue)
+            {
+                productsQuery = productsQuery.Where(p => p.ProductionDate.Date <= filterModel.FilterEndDate.Value.Date);
             }
 
-            await _farmerService.CreateFarmerAsync(farmerName, email, password);
-            return RedirectToAction("employeeDashboard");
+            //Prepare the ViewModel for the View
+            var viewModel = new employeeDashboardModel
+            {
+                // Populate filter options for redisplay
+                AvailableFarmers = farmerListItems,
+                SelectedFarmerId = filterModel.SelectedFarmerId,
+                FilterProductType = filterModel.FilterProductType,
+                FilterStartDate = filterModel.FilterStartDate,
+                FilterEndDate = filterModel.FilterEndDate,
+
+                // Assign the filtered products
+                Products = productsQuery.ToList() // Execute the query
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> viewAllProducts(string farmerFilter = "", string categoryFilter = "", DateTime? dateFrom = null, DateTime? dateTo = null)
+        public IActionResult AddFarmer()
         {
-            if (HttpContext.Session.GetString("Role") != "employee")
-                return RedirectToAction("loginView", "account");
+//new addFarmerModel()
+            return View();
+        }
 
-            var products = await _productService.GetFilteredProductsAsync(farmerFilter, categoryFilter, dateFrom, dateTo);
-            ViewBag.Farmers = await _productService.GetFarmerNamesAsync();
-            ViewBag.Categories = await _productService.GetCategoriesAsync();
 
-            ViewBag.CurrentFarmerFilter = farmerFilter;
-            ViewBag.CurrentCategoryFilter = categoryFilter;
-            ViewBag.CurrentDateFrom = dateFrom;
-            ViewBag.CurrentDateTo = dateTo;
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> addFarmerModel(addFarmerModel model)
+        {
 
-            return View(products);
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Return view with validation errors
+            }
+
+
+            var (success, errorMessage) = await _farmerService.CreateFarmerWithUserAsync(model);
+
+            if (success)
+            {
+                _logger.LogInformation("New farmer {FarmerName} and user {Username} created successfully.", model.FarmerName, model.Username);
+                TempData["SuccessMessage"] = $"Farmer '{model.FarmerName}' created successfully.";
+                return RedirectToAction(nameof(employeeDashboard));
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, errorMessage ?? "Failed to create farmer account.");
+                return View("addFarmerModel", model);
+
+
+            }
         }
     }
 }

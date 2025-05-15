@@ -4,14 +4,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
 {
-    public class employeeModel
+    public class employeeModel //User
     {
         [Key]
-        public int EmployeeID { get; set; }
+        public int Id { get; set; }
+
         [Required]
-        public string employeeName { get; set; }
-        public DateTime dateAdded { get; set; }
+        [StringLength(100)]
+        public string Username { get; set; }
+
         [Required]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string Role { get; set; }
+
+        public virtual farmerModel? FarmerProfile { get; set; }
     }
 }

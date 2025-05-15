@@ -1,78 +1,112 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ST10254164_LukeC_GR2_PROG7311_A2.Models;
 using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository;
+using ST10254164_LukeC_GR2_PROG7311_A2.Services.accountServices;
 using ST10254164_LukeC_GR2_PROG7311_A2.Services.farmerServices;
+using System.Security.Claims;
 
 //------------------------------------START OF FILE------------------------------------//
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 {
     public class accountController : Controller
     {
-        private readonly IFarmerServices _farmerService;
-        
-        private readonly IEmployeeRepository _employeeRepository;
+            private readonly IAccountService _accountService;
+            private readonly ILogger<accountController> _logger;
 
-        public accountController(
-            IFarmerServices farmerService,
-            
-            IEmployeeRepository employeeRepository)
-        {
-            _farmerService = farmerService;
-            
-            _employeeRepository = employeeRepository;
-        }
-
-        [HttpGet]
-        public IActionResult loginView()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> loginViewAsync(string username, string password)
-        {
-            var role = ""; // determine role
-
-            var employee = await _employeeRepository.GetEmployeeByCredentialsAsync(username, password);
-            if (employee != null)
+            public accountController(IAccountService accountService, ILogger<accountController> logger)
             {
-                role = "employee";
-            }
-            else
-            {
-                // Check if it's a farmer
-                var farmer = await _farmerService.GetFarmerByCredentials(username, password);
-                if (farmer != null)
-                {
-                    role = "farmer";
-                }
+                _accountService = accountService;
+                _logger = logger;
             }
 
-            if (string.IsNullOrEmpty(role))
+
+            [HttpGet]
+            public IActionResult loginView(string? returnUrl = null)
             {
-                ViewBag.LoginError = "Invalid username or password.";
+                ViewData["ReturnUrl"] = returnUrl;
                 return View();
             }
 
-            //store user info in session 
-            HttpContext.Session.SetString("User", username);
-            HttpContext.Session.SetString("Role", role);
 
-            //redirect based on role
-            if (role == "farmer")
-                return RedirectToAction("farmerDashboard", "farmer");
-            else
-                return RedirectToAction("employeeDashboard", "employee");
-        }
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> loginView(loginModel model, string? returnUrl = null)
+            {
+                ViewData["ReturnUrl"] = returnUrl;
+                if (ModelState.IsValid)
+                {
+                    var user = await _accountService.ValidateCredentialsAsync(model.Username, model.Password);
 
-        public IActionResult logout()
-        {
-            // Clear the session
-            HttpContext.Session.Clear();
-            // Redirect to the home view
-            return RedirectToAction("Index", "Home");
+                    if (user != null)
+                    {
+                        _logger.LogInformation("User {Username} logged in successfully.", user.Username);
+
+                        var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // Store User ID
+                        new Claim(ClaimTypes.Role, user.Role)
+
+                    };
+
+                        var claimsIdentity = new ClaimsIdentity(
+                            claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                        var authProperties = new AuthenticationProperties
+                        {
+
+                        };
+
+                        await HttpContext.SignInAsync(
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            new ClaimsPrincipal(claimsIdentity),
+                            authProperties);
+
+                        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            // Redirect based on role
+                            if (user.Role == "Farmer")
+                            {
+
+                                return RedirectToAction("FarmerProducts", "Product");
+                            }
+                            else if (user.Role == "Employee")
+                            {
+
+                                return RedirectToAction("Index", "Home");
+                            }
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Invalid login attempt for username {Username}.", model.Username);
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return View(model);
+                    }
+                }
+                return View(model);
+            }
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> Logout()
+            {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                _logger.LogInformation("User logged out.");
+                return RedirectToAction("Index", "Home");
+            }
+            [HttpGet]
+            public IActionResult AccessDenied()
+            {
+                return View();
+            }
         }
     }
-}
 //------------------------------------END OF FILE------------------------------------//

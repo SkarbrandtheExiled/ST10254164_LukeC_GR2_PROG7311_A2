@@ -78,10 +78,10 @@
                     @foreach (var product in Model)
                     {
                         <tr>
-                            <td>@product.productName</td>
-                            <td>@product.farmerName</td>
-                            <td>@product.dateAdded.ToShortDateString()</td>
-                            <td>@product.productCreationDate.ToShortDateString()</td>
+                            <td>@product.Name</td>
+                            <td>@product.Farmer.Name</td>
+                            <td>@product.AddedDate.ToShortDateString()</td>
+                            <td>@product.ProductionDate.ToShortDateString()</td>
                             <td>@product.Category</td>
                         </tr>
                     }

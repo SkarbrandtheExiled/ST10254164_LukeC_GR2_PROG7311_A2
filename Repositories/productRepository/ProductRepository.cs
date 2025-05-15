@@ -7,30 +7,55 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.productRepository
     public class ProductRepository : IProductRepository
     {
         private readonly applicationDBContext _context;
-        public ProductRepository(applicationDBContext context) => _context = context;
 
-        public async Task<List<productModel>> GetFilteredProductsAsync(string farmer, string category, DateTime? from, DateTime? to)
+        public ProductRepository(applicationDBContext context)
         {
-            var query = _context.products.AsQueryable();
-            if (!string.IsNullOrEmpty(farmer)) query = query.Where(p => p.farmerName == farmer);
-            if (!string.IsNullOrEmpty(category)) query = query.Where(p => p.Category == category);
-            if (from.HasValue) query = query.Where(p => p.productCreationDate >= from);
-            if (to.HasValue) query = query.Where(p => p.productCreationDate <= to);
-            return await query.ToListAsync();
+            _context = context;
         }
 
-        public async Task<List<string>> GetDistinctCategoriesAsync(string farmerName = null)
+        public async Task AddProductAsync(productModel product)
         {
-            var query = _context.products.AsQueryable();
-            if (!string.IsNullOrEmpty(farmerName))
-                query = query.Where(p => p.farmerName == farmerName);
-            return await query.Select(p => p.Category).Distinct().ToListAsync();
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task AddAsync(productModel product) => await _context.products.AddAsync(product);
-        public async Task<List<productModel>> GetByFarmerAsync(string farmerName) =>
-            await _context.products.Where(p => p.farmerName == farmerName).ToListAsync();
+        public async Task DeleteProductAsync(int productId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            if (product != null)
+            {
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+            }
+        }
 
-        public async Task SaveAsync() => await _context.SaveChangesAsync();
+        public async Task<productModel?> GetProductByIdAsync(int productId)
+        {
+            return await _context.Products
+                .Include(p => p.Farmer)
+                .FirstOrDefaultAsync(p => p.Id == productId);
+        }
+
+        public async Task<IEnumerable<productModel>> GetProductsByFarmerIdAsync(int farmerId)
+        {
+            return await _context.Products
+                .Where(p => p.FarmerId == farmerId)
+                .OrderByDescending(p => p.AddedDate)
+                .ToListAsync();
+        }
+
+        public async Task UpdateProductAsync(productModel product)
+        {
+            _context.Entry(product).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<productModel>> GetAllProductsAsync()
+        {
+            return await _context.Products
+                .Include(p => p.Farmer)
+                .OrderByDescending(p => p.AddedDate)
+                .ToListAsync();
+        }
     }
 }

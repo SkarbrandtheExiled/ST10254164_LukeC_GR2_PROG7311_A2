@@ -1,24 +1,30 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
 {
-    public class productModel
+    public class productModel //Product
     {
         [Key]
-        public int productID { get; set; }
+        public int Id { get; set; } // Primary Key
 
         [Required]
-        public string productName { get; set; }
+        [StringLength(150)]
+        public string Name { get; set; }
 
         [Required]
+        [StringLength(100)]
         public string Category { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
-        public DateTime productCreationDate { get; set; }
+        public DateTime ProductionDate { get; set; }
 
-        public string farmerName { get; set; }
+        public DateTime AddedDate { get; set; } = DateTime.UtcNow;
 
-        [DataType(DataType.Date)]
-        public DateTime dateAdded { get; set; }
+        [Required]
+        public int FarmerId { get; set; } // Foreign Key
+        [ForeignKey("FarmerId")]
+        public virtual farmerModel Farmer { get; set; }
     }
 }

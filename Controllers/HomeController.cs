@@ -18,6 +18,17 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
             return View();
         }
 
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+
+        public IActionResult loginView()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

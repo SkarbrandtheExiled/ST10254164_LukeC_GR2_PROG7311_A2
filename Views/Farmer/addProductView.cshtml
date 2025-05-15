@@ -1,32 +1,30 @@
-﻿@model ST10254164_LukeC_GR2_PROG7311_A2.Models.productModel
+﻿@model ST10254164_LukeC_GR2_PROG7311_A2.Models.farmerDashboardModel  
 
-<h2>Add product</h2>
-<body>
+<h2>Add product</h2>  
 
+<section id="add-product" class="mb-5">  
+    <form asp-controller="Product" asp-action="Add" method="post" autocomplete="off">  
+        @Html.AntiForgeryToken()  
+        <div asp-validation-summary="All" class="alert alert-danger"></div>  
+        <div class="mb-3">  
+            <label for="NewProduct_Name" class="form-label">@Html.DisplayNameFor(m => m.NewProduct.Name)</label>  
+            <input id="NewProduct_Name" asp-for="NewProduct.Name" class="form-control" />  
+            <span asp-validation-for="NewProduct.Name" class="text-danger"></span>  
+        </div>  
+        <div class="mb-3">  
+            <label for="NewProduct_Category" class="form-label">@Html.DisplayNameFor(m => m.NewProduct.Category)</label>  
+            <input id="NewProduct_Category" asp-for="NewProduct.Category" class="form-control" />  
+            <span asp-validation-for="NewProduct.Category" class="text-danger"></span>  
+        </div>  
+        <div class="mb-3">  
+            <label for="NewProduct_ProductionDate" class="form-label">@Html.DisplayNameFor(m => m.NewProduct.ProductionDate)</label>  
+            <input id="NewProduct_ProductionDate" asp-for="NewProduct.ProductionDate" type="date" class="form-control" />  
+            <span asp-validation-for="NewProduct.ProductionDate" class="text-danger"></span>  
+        </div>  
+        <button type="submit" class="btn btn-primary">Add Product</button>  
+    </form>  
+</section>  
 
-        <div class="add-container">
-
-            <form asp-action="addProductView" method="post" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="form-group">
-                    <label asp-for="productName">Product Name:</label>
-                    <input asp-for="productName" class="form-control" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="productCreationDate">Product creation date:</label>
-                    <input asp-for="productCreationDate" class="form-control" required />
-                </div>
-
-                <div class="form-group"> <!--change so that the naming is in the text block, make it a placeholder-->
-                    <label asp-for="Category">Category:</label>
-                    <input asp-for="Category" class="form-control" required />
-                </div>
-
-                    <button type="submit" class="btn btn-primary">Add product</button>
-            </form>
-        </div>
-   
-</body>
-
+@section Scripts {  
+    <partial name="_ValidationScriptsPartial" />  
+}
