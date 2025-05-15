@@ -3,7 +3,7 @@
 <h2>Add product</h2>  
 
 <section id="add-product" class="mb-5">  
-    <form asp-controller="Product" asp-action="Add" method="post" autocomplete="off">  
+    <form asp-controller="Product" asp-action="addProductView" method="post" autocomplete="off">
         @Html.AntiForgeryToken()  
         <div asp-validation-summary="All" class="alert alert-danger"></div>  
         <div class="mb-3">  
@@ -24,7 +24,3 @@
         <button type="submit" class="btn btn-primary">Add Product</button>  
     </form>  
 </section>  
-
-@section Scripts {  
-    <partial name="_ValidationScriptsPartial" />  
-}

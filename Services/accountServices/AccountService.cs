@@ -23,7 +23,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.accountServices
             }
 
 
-            if (user.PasswordHash == password)
+            if (user.Password == password)
             {
                 return user; // Credentials are valid
             }

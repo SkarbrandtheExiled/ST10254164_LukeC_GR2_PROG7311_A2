@@ -9,7 +9,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
         public string FarmerName { get; set; }
 
         [Display(Name = "Contact Details")]
-        public string? ContactDetails { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         [Display(Name = "Username")]

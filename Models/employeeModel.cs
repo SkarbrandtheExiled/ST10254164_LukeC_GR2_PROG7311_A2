@@ -14,7 +14,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
         public string Username { get; set; }
 
         [Required]
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
         [Required]
         [StringLength(50)]
         public string Role { get; set; }

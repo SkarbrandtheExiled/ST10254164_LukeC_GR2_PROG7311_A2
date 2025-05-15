@@ -102,11 +102,6 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
                 _logger.LogInformation("User logged out.");
                 return RedirectToAction("Index", "Home");
             }
-            [HttpGet]
-            public IActionResult AccessDenied()
-            {
-                return View();
-            }
         }
     }
 //------------------------------------END OF FILE------------------------------------//

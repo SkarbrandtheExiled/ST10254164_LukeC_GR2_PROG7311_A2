@@ -44,7 +44,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.FarmerServices
             var newUser = new employeeModel
             {
                 Username = model.Username,
-                PasswordHash = model.Password,
+                Password = model.Password,
                 Role = "Farmer"
             };
 
@@ -55,7 +55,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.FarmerServices
                 var newFarmer = new farmerModel
                 {
                     Name = model.FarmerName,
-                    ContactDetails = model.ContactDetails,
+                    Email = model.Email,
                     UserId = newUser.Id
                 };
                 await _farmerRepository.AddFarmerAsync(newFarmer);

@@ -55,10 +55,17 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
             return View("~/Views/Farmer/farmerDashboard.cshtml", viewModel);
         }
 
+        [HttpGet]
+        public IActionResult addProductView()
+        {
+            // Optionally, pass a model if your view expects one
+            return View("~/Views/Farmer/addProductView.cshtml");
+        }
+
         // POST: Product/Add (from dashboard)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(farmerDashboardModel viewModel)
+        public async Task<IActionResult> addProductView(farmerDashboardModel viewModel)
         {
             var farmer = await GetCurrentFarmerAsync();
             if (farmer == null)
@@ -94,94 +101,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
                 NewProduct = productToAdd ?? new productModel { ProductionDate = DateTime.Today },
                 MyProducts = existingProducts
             };
-            return View("~/Views/Home/FarmerDashboard.cshtml", newViewModel);
-        }
-
-        // GET: Product/Edit/5
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var farmer = await GetCurrentFarmerAsync();
-            if (farmer == null) return RedirectToAction("Login", "Account");
-
-            var product = await _productService.GetProductByIdAsync(id);
-            if (product == null || product.FarmerId != farmer.Id)
-                return NotFound();
-
-            return View("EditProduct", product);
-        }
-
-        // POST: Product/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, productModel product)
-        {
-            var farmer = await GetCurrentFarmerAsync();
-            if (farmer == null) return RedirectToAction("Login", "Account");
-
-            if (id != product.Id)
-                return NotFound();
-
-            var originalProduct = await _productService.GetProductByIdAsync(id);
-            if (originalProduct == null || originalProduct.FarmerId != farmer.Id)
-                return NotFound();
-
-            product.FarmerId = originalProduct.FarmerId;
-            product.AddedDate = originalProduct.AddedDate;
-            product.Farmer = null;
-
-            ModelState.Remove("Farmer");
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await _productService.UpdateProductAsync(product);
-                    TempData["SuccessMessage"] = "Product updated successfully!";
-                    return RedirectToAction(nameof(FarmerProducts));
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    ModelState.AddModelError("", "The product was modified by another user. Please try again.");
-                }
-                catch (System.Exception ex)
-                {
-                    _logger.LogError(ex, "Error updating product {ProductId}", product.Id);
-                    ModelState.AddModelError("", "An error occurred while updating the product.");
-                }
-            }
-            return View("EditProduct", product);
-        }
-
-        // GET: Product/Delete/5
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var farmer = await GetCurrentFarmerAsync();
-            if (farmer == null) return RedirectToAction("Login", "Account");
-
-            var product = await _productService.GetProductByIdAsync(id);
-            if (product == null || product.FarmerId != farmer.Id)
-                return NotFound();
-
-            return View("DeleteProduct", product);
-        }
-
-        // POST: Product/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var farmer = await GetCurrentFarmerAsync();
-            if (farmer == null) return RedirectToAction("Login", "Account");
-
-            var product = await _productService.GetProductByIdAsync(id);
-            if (product == null || product.FarmerId != farmer.Id)
-                return NotFound();
-
-            await _productService.DeleteProductAsync(id);
-            TempData["SuccessMessage"] = "Product deleted successfully!";
-            return RedirectToAction(nameof(FarmerProducts));
+            return View("~/Views/Home/farmerDashboard.cshtml", newViewModel);
         }
     }
 }

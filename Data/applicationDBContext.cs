@@ -43,8 +43,8 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Data
             var employeeUser = new employeeModel
             {
                 Id = 1,
-                Username = "employee01",
-                PasswordHash = "EmpP@ss123", // Storing plain text
+                Username = "employee",
+                Password = "employee101", // Storing plain text
                 Role = "Employee"
             };
             modelBuilder.Entity<employeeModel>().HasData(employeeUser);
@@ -52,8 +52,8 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Data
             var farmerUser1 = new employeeModel
             {
                 Id = 2,
-                Username = "farmerJohn",
-                PasswordHash = "FarmP@ss123",
+                Username = "Test",
+                Password = "testrun",
                 Role = "Farmer"
             };
             modelBuilder.Entity<employeeModel>().HasData(farmerUser1);
@@ -61,8 +61,8 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Data
             var farmerUser2 = new employeeModel
             {
                 Id = 3,
-                Username = "farmerJane",
-                PasswordHash = "FarmP@ss456",
+                Username = "farmer",
+                Password = "123456",
                 Role = "Farmer"
             };
             modelBuilder.Entity<employeeModel>().HasData(farmerUser2);
@@ -71,15 +71,15 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Data
                 new farmerModel
                 {
                     Id = 1,
-                    Name = "John's Sunny Acres",
-                    ContactDetails = "john@sunnyacres.com, 555-0101",
+                    Name = "Diddly Squat",
+                    Email = "DiddlySquat@gmail.com",
                     UserId = farmerUser1.Id
                 },
                 new farmerModel
                 {
                     Id = 2,
-                    Name = "Jane's Green Fields",
-                    ContactDetails = "jane@greenfields.org, 555-0202",
+                    Name = "Jordon Wine Estate",
+                    Email = "JorWine@gmail.com",
                     UserId = farmerUser2.Id
                 }
             );
@@ -88,38 +88,38 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Data
                 new productModel
                 {
                     Id = 1,
-                    Name = "Solar Panel",
-                    Category = "Outdoor",
-                    ProductionDate = new DateTime(2025, 4, 15),
+                    Name = "Solar Panels",
+                    Category = "Renewable energy",
+                    ProductionDate = new DateTime(2023, 6, 1),
                     FarmerId = 1,
-                    AddedDate = new DateTime(2025, 5, 2)
+                    AddedDate = new DateTime(2024, 1, 1)
                 },
                 new productModel
                 {
                     Id = 2,
-                    Name = "Free-Range Eggs",
-                    Category = "Poultry",
-                    ProductionDate = new DateTime(2025, 5, 1),
+                    Name = "Jam",
+                    Category = "sugary food",
+                    ProductionDate = new DateTime(2025, 2, 5),
                     FarmerId = 1,
-                    AddedDate = new DateTime(2025, 5, 7)
+                    AddedDate = new DateTime(2025, 3, 7)
                 },
                 new productModel
                 {
                     Id = 3,
-                    Name = "Artisan Bread",
-                    Category = "Bakery",
-                    ProductionDate = new DateTime(2025, 5, 5),
+                    Name = "Olives",
+                    Category = "Drupe",
+                    ProductionDate = new DateTime(2016, 2, 3),
                     FarmerId = 2,
-                    AddedDate = new DateTime(2025, 5, 10)
+                    AddedDate = new DateTime(2016, 3, 2)
                 },
                 new productModel
                 {
                     Id = 4,
-                    Name = "Fresh Strawberries",
+                    Name = "Cara Cara",
                     Category = "Fruit",
-                    ProductionDate = new DateTime(2025, 5, 3),
+                    ProductionDate = new DateTime(2025, 7, 15),
                     FarmerId = 2,
-                    AddedDate = new DateTime(2025, 5, 9)
+                    AddedDate = new DateTime(2025, 7, 20)
                 }
             );
         }

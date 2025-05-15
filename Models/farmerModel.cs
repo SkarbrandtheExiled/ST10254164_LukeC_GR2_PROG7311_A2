@@ -13,7 +13,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
         public string Name { get; set; }
 
         [StringLength(500)]
-        public string? ContactDetails { get; set; }
+        public string? Email { get; set; }
 
         // Foreign Key to User
         [Required]
