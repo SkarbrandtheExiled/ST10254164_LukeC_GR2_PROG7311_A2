@@ -3,6 +3,7 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.accountServices
 {
+    //------------------------------START OF FILE--------------------------------//
     public class AccountService : IAccountService
     {
         private readonly IEmployeeRepository _userRepository;
@@ -32,3 +33,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.accountServices
         }
     }
 }
+//--------------------------------------END OF FILE--------------------------------//

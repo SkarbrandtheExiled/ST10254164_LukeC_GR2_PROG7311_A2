@@ -5,11 +5,13 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Data
 {
     public class applicationDBContext : DbContext
     {
+        //-------------------START OF FILE----------------------------------//
         public applicationDBContext(DbContextOptions<applicationDBContext> options)
     : base(options)
         {
-        }
 
+        }
+        //establishing the connection to the database and creating the tables
         public DbSet<employeeModel> Users { get; set; }
         public DbSet<farmerModel> Farmers { get; set; }
         public DbSet<productModel> Products { get; set; }
@@ -58,7 +60,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Data
             };
             modelBuilder.Entity<employeeModel>().HasData(farmerUser1);
 
-            var farmerUser2 = new employeeModel
+            var farmerUser2 = new employeeModel //dummy data for logging in as either a farmer or employee
             {
                 Id = 3,
                 Username = "farmer",
@@ -125,4 +127,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Data
         }
     }
 }
-
+//-------------------END OF FILE----------------------------------//

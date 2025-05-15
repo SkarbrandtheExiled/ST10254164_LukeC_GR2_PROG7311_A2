@@ -2,6 +2,7 @@
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.productRepository
 {
+    //------------------------------START OF FILE--------------------------------//
     public interface IProductRepository
     {
         Task<productModel?> GetProductByIdAsync(int productId);
@@ -12,3 +13,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.productRepository
         Task<IEnumerable<productModel>> GetAllProductsAsync();
     }
 }
+//------------------------------END OF FILE--------------------------------//

@@ -3,8 +3,8 @@
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
 {
     public class loginModel
-    {
-        [Required(ErrorMessage = "Username")]
+    { //------------------------------START OF FILE--------------------------------//
+        [Required(ErrorMessage = "Username")] //used to create a new farmer user in the system
         [Display(Name = "Username")]
         public string Username { get; set; }
 
@@ -13,3 +13,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
         public string Password { get; set; }
     }
 }
+//--------------------------------------END OF FILE----------------------------------//

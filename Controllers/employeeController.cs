@@ -8,7 +8,8 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Services.productServices;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 {
-    [Authorize(Roles = "Employee")] // Only Employees can access this
+    //------------------------------START OF FILE--------------------------------//
+    [Authorize(Roles = "Employee")] // Ensure only employees can access this controller
     public class employeeController : Controller
     {
         private readonly IFarmerServices _farmerService;
@@ -40,7 +41,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 
             var productsQuery = await _productService.GetAllProductsAsync();
 
-            // Apply filters based on the submitted filterModel
+            // Apply filters based on the chosen filterModel
             if (filterModel.SelectedFarmerId.HasValue)
             {
                 productsQuery = productsQuery.Where(p => p.FarmerId == filterModel.SelectedFarmerId.Value);
@@ -59,7 +60,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
                 productsQuery = productsQuery.Where(p => p.ProductionDate.Date <= filterModel.FilterEndDate.Value.Date);
             }
 
-            //Prepare the ViewModel for the View
+            //Prepares the ViewModel for the View after applying filters
             var viewModel = new employeeDashboardModel
             {
                 // Populate filter options for redisplay
@@ -69,15 +70,15 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
                 FilterStartDate = filterModel.FilterStartDate,
                 FilterEndDate = filterModel.FilterEndDate,
 
-                // Assign the filtered products
-                Products = productsQuery.ToList() // Execute the query
+                //executes the query and gets the filtered products
+                Products = productsQuery.ToList() 
             };
 
             return View(viewModel);
         }
 
         [HttpGet]
-        public IActionResult addFarmerView()
+        public IActionResult addFarmerView() // This method is used to display the addFarmerModel view
         {
             new addFarmerModel();
             return View();
@@ -86,7 +87,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> addFarmerModel(addFarmerModel model)
+        public async Task<IActionResult> addFarmerModel(addFarmerModel model) // This method is used to handle the form submission for adding a new farmer
         {
 
             if (!ModelState.IsValid)
@@ -101,15 +102,16 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
             {
                 _logger.LogInformation("New farmer {FarmerName} and user {Username} created successfully.", model.FarmerName, model.Username);
                 TempData["SuccessMessage"] = $"Farmer '{model.FarmerName}' created successfully.";
-                return RedirectToAction(nameof(employeeDashboard));
+                return RedirectToAction(nameof(employeeDashboard)); // Redirect to the employee dashboard after successful creation
             }
             else
             {
                 ModelState.AddModelError(string.Empty, errorMessage ?? "Failed to create farmer account.");
-                return View("addFarmerModel", model);
+                return View("addFarmerModel", model); // Return view with error message
 
 
             }
         }
     }
 }
+//------------------------------END OF FILE--------------------------------//

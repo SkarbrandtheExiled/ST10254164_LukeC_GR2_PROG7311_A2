@@ -2,6 +2,7 @@
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository
 {
+    //------------------------------START OF FILE--------------------------------//
     public interface IEmployeeRepository
     {
         Task<employeeModel?> GetUserByUsernameAsync(string username);
@@ -10,3 +11,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository
 
     }
 }
+//------------------------------END OF FILE--------------------------------//

@@ -4,6 +4,7 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Models;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository
 {
+    //------------------------------START OF FILE--------------------------------//
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly applicationDBContext _context;
@@ -32,3 +33,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.employeeRepository
 
     }
 }
+//------------------------------END OF FILE--------------------------------//

@@ -2,6 +2,7 @@
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.farmerRepository
 {
+    //------------------------------START OF FILE--------------------------------//
     public interface IFarmerRepository
     {
         Task<farmerModel?> GetFarmerByUserIdAsync(int userId);
@@ -10,3 +11,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.farmerRepository
         Task<IEnumerable<farmerModel>> GetAllFarmersAsync();
     }
 }
+//-----------------------END OF FILE--------------------------------//

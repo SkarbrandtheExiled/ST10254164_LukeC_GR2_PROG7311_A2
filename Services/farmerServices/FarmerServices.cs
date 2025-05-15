@@ -5,6 +5,7 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Services.farmerServices;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.FarmerServices
 {
+    //-----------------------------START OF FILE--------------------------------//
     public class FarmerServices : IFarmerServices
     {
         private readonly IFarmerRepository _farmerRepository;
@@ -70,3 +71,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.FarmerServices
         }
     }
 }
+//-----------------------------END OF FILE--------------------------------//

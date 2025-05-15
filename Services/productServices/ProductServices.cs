@@ -4,6 +4,7 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Repositories.productRepository;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.productServices
 {
+    //------------------------------START OF FILE--------------------------------//
     public class ProductServices : IProductServices
     {
         private readonly IProductRepository _productRepository;
@@ -67,3 +68,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.productServices
         }
     }
 }
+//------------------------------END OF FILE----------------------------------//

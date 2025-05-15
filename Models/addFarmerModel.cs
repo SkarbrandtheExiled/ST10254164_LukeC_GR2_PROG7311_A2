@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
-{
+{ /// This class is used to create a new farmer user in the system
     public class addFarmerModel
     {
         [Required]
@@ -9,7 +9,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
         public string FarmerName { get; set; }
 
         [Display(Name = "Contact Details")]
-        public string? Email { get; set; }
+        public string? Email { get; set; } // Optional field not really used in the system
 
         [Required]
         [Display(Name = "Username")]

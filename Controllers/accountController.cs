@@ -43,11 +43,11 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
                     if (user != null)
                     {
                         _logger.LogInformation("User {Username} logged in successfully.", user.Username);
-
+                    //remember to changes the claims variable name to line up with the theme 
                         var claims = new List<Claim>
-                    {
+                    { //CODE FROM LAST YEAR↨
                         new Claim(ClaimTypes.Name, user.Username),
-                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // Store User ID
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), //
                         new Claim(ClaimTypes.Role, user.Role)
 
                     };

@@ -2,6 +2,7 @@
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.farmerServices
 {
+    //-----------------------------START OF FILE--------------------------------//
     public interface IFarmerServices
     {
         Task<farmerModel?> GetFarmerByUserIdAsync(int userId);
@@ -9,3 +10,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Services.farmerServices
         Task<(bool Success, string? ErrorMessage)> CreateFarmerWithUserAsync(addFarmerModel model);
     }
 }
+//-----------------------------END OF FILE--------------------------------//

@@ -2,7 +2,9 @@
 {
     public class farmerDashboardModel
     {
-        public productModel NewProduct { get; set; } = new productModel();
+        //-------------------------------START OF FILE--------------------------------//
+        public productModel NewProduct { get; set; } = new productModel(); //used to create a product
         public IEnumerable<productModel> MyProducts { get; set; } = new List<productModel>();
     }
 }
+//-------------------------------END OF FILE--------------------------------//

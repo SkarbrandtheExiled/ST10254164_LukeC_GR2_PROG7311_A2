@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Models
 {
-    public class farmerModel //Farmer
+    public class farmerModel 
     {
         [Key]
         public int Id { get; set; }

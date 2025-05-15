@@ -8,6 +8,8 @@ using System.Security.Claims;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 {
+    //---------------------------------START OF FILE--------------------------------//
+    //This controller is responsible for handling product-related actions for farmers
     [Authorize(Roles = "Farmer")]
     public class productController : Controller
     {
@@ -17,7 +19,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
 
         public productController(
             IProductServices productService,
-            IFarmerServices farmerService,
+            IFarmerServices farmerService, // this code is used to get the farmer's information from the services and repositories 
             ILogger<productController> logger)
         {
             _productService = productService;
@@ -33,8 +35,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
             return await _farmerService.GetFarmerByUserIdAsync(userId);
         }
 
-        // GET: Product/FarmerProducts (Dashboard)
-        public async Task<IActionResult> FarmerProducts()
+        public async Task<IActionResult> FarmerProducts() // this method is used to get the farmer's products from the database and display them on the view
         {
             var farmer = await GetCurrentFarmerAsync();
             if (farmer == null)
@@ -44,11 +45,11 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
             }
 
             var products = await _productService.GetProductsForFarmerAsync(farmer.Id);
-            ViewBag.FarmerName = farmer.Name;
+            ViewBag.FarmerName = farmer.Name; //
 
             var viewModel = new farmerDashboardModel
             {
-                NewProduct = new productModel { ProductionDate = DateTime.Today },
+                NewProduct = new productModel { ProductionDate = DateTime.Today },// sets the production date of the new product to today's date (can be modified if desired)
                 MyProducts = products
             };
 
@@ -58,13 +59,12 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
         [HttpGet]
         public IActionResult addProductView()
         {
-            // Optionally, pass a model if your view expects one
-            return View("~/Views/Farmer/addProductView.cshtml");
+            return View("~/Views/Farmer/addProductView.cshtml"); // this code is supposed to get the addProductView for the farmer (did not work)
         }
 
-        // POST: Product/Add (from dashboard)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //this method is used to add a new product for the farmer
         public async Task<IActionResult> addProductView(farmerDashboardModel viewModel)
         {
             var farmer = await GetCurrentFarmerAsync();
@@ -76,7 +76,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
             ModelState.Remove("NewProduct.Id");
             ModelState.Remove("NewProduct.FarmerId");
             ModelState.Remove("NewProduct.Farmer");
-            ModelState.Remove("NewProduct.AddedDate");
+            ModelState.Remove("NewProduct.AddedDate"); // this code is used to remove the unwanted data from the model state    
             ModelState.Remove("MyProducts");
 
             if (ModelState.IsValid && productToAdd != null)
@@ -85,7 +85,7 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
                 {
                     await _productService.AddProductForFarmerAsync(productToAdd, farmer.Id);
                     TempData["SuccessMessage"] = "Product added successfully!";
-                    return RedirectToAction(nameof(FarmerProducts));
+                    return RedirectToAction(nameof(FarmerProducts)); //redirects the user to the farmer's product page after adding a new product
                 }
                 catch (System.Exception ex)
                 {
@@ -95,13 +95,14 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Controllers
             }
 
             var existingProducts = await _productService.GetProductsForFarmerAsync(farmer.Id);
-            ViewBag.FarmerName = farmer.Name;
+            ViewBag.FarmerName = farmer.Name; // used to get the farmer's name from the database and display it on the view
             var newViewModel = new farmerDashboardModel
             {
-                NewProduct = productToAdd ?? new productModel { ProductionDate = DateTime.Today },
+                NewProduct = productToAdd ?? new productModel { ProductionDate = DateTime.Today }, //adds the new product to the chosen view 
                 MyProducts = existingProducts
             };
             return View("~/Views/Home/farmerDashboard.cshtml", newViewModel);
         }
     }
 }
+//---------------------------------END OF FILE--------------------------------//

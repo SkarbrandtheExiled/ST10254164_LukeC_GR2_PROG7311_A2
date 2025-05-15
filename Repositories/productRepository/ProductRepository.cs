@@ -4,6 +4,7 @@ using ST10254164_LukeC_GR2_PROG7311_A2.Models;
 
 namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.productRepository
 {
+    //------------------------------START OF FILE--------------------------------//
     public class ProductRepository : IProductRepository
     {
         private readonly applicationDBContext _context;
@@ -59,3 +60,4 @@ namespace ST10254164_LukeC_GR2_PROG7311_A2.Repositories.productRepository
         }
     }
 }
+//------------------------------END OF FILE--------------------------------//
